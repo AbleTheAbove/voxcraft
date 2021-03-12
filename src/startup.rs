@@ -1,14 +1,14 @@
 use crate::ROOT_PATH;
-use home;
 use std::path::{Path, PathBuf};
+extern crate find_folder;
 
 pub fn addon_folder_exists() -> bool {
     let b: bool = Path::new(ROOT_PATH).is_dir();
-    home_dir();
     return b;
 }
 
-fn home_dir() -> Option<PathBuf> {
-    let home_dir = home::home_dir();
-    home_dir
+pub fn get_root() -> PathBuf {
+    find_folder::Search::ParentsThenKids(3, 3)
+        .for_folder(ROOT_PATH)
+        .unwrap()
 }

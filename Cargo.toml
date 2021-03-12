@@ -8,5 +8,6 @@ edition = "2018"
 
 [dependencies]
 rhai="*"
-home = "0.5.3"
 toml = "*"
+piston_window="*"
+find_folder="*"
