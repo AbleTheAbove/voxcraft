@@ -26,7 +26,7 @@ fn main() {
 
     let mut window: PistonWindow = WindowSettings::new(
         "piston: hello_world",
-        [config.height as u32, config.width as u32], // u32 is required here
+        [config.width as u32, config.height as u32], // u32 is required here
     )
     .exit_on_esc(true)
     //        .opengl(OpenGL::V2_1) // Set a different OpenGl version
