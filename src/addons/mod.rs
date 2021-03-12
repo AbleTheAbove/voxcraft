@@ -1,6 +1,6 @@
+use crate::startup::addon_folder_exists;
 use rhai::{Engine, ImmutableString, RegisterFn};
 use std::fmt::{Debug, Display};
-
 #[derive(Debug)]
 struct Addon {
     addon_id: String,

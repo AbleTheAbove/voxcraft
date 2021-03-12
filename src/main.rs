@@ -1,9 +1,12 @@
 pub const ROOT_PATH: &str = ".rustcraft";
 
 mod addons;
+mod config;
 mod startup;
 
 fn main() {
+    let mut config = config::load_config();
+
     addons::load_addons();
     if startup::addon_folder_exists() {
         println!("Good to go!");
