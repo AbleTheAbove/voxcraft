@@ -8,7 +8,7 @@ fn main() {
     let mut config = config::load_config();
     // dont leave this in
     config.height -= 1;
-    println!("{:?}", config); // For testing
+    println!("{:?}", config); // For testing 2
     addons::load_addons();
     if startup::addon_folder_exists() {
         println!("Good to go!");
