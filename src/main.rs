@@ -14,13 +14,14 @@ fn main() {
     let mut config = config::load_config();
     // dont leave this in
     config.height -= 1 + -1; // weird math to make the compiler not throw a mutable warning
-    println!("{:?}", config);
 
     addons::load_addons();
+
+    let text;
     if startup::addon_folder_exists() {
-        println!("Good to go!");
+        text = "Good to go!";
     } else {
-        println!("Rustcraft folder can't be found.")
+        text = "Rustcraft folder can't be found.";
     }
 
     let mut window: PistonWindow = WindowSettings::new(
@@ -44,7 +45,7 @@ fn main() {
 
             clear([0.0, 0.0, 0.0, 1.0], g);
             text::Text::new_color([0.0, 1.0, 0.0, 1.0], 32)
-                .draw("Hello world!", &mut glyphs, &c.draw_state, transform, g)
+                .draw(text, &mut glyphs, &c.draw_state, transform, g)
                 .unwrap();
 
             // Update glyphs before rendering.
