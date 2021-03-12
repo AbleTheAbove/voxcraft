@@ -1,16 +1,16 @@
-use std::convert::From;
+//use std::convert::From;
 use std::fs;
 use toml::Value;
 
 use crate::ROOT_PATH;
 #[derive(Debug)]
 pub struct Config {
-    height: i64,
-    width: i64,
+    pub height: i64,
+    pub width: i64,
 }
 // This will return the config
 // On the mean time just fake it
-pub fn load_config() {
+pub fn load_config() -> Config {
     let filename = format!("{}/config.toml", ROOT_PATH);
     // --snip--
     println!("In file {}", filename);
@@ -32,4 +32,5 @@ pub fn load_config() {
     config.width = value["width"].as_integer().unwrap();
     config.height = value["height"].as_integer().unwrap();
     println!("{:?}", config);
+    config
 }
