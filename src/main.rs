@@ -7,14 +7,14 @@ mod config;
 mod startup;
 
 pub const ROOT_PATH: &str = ".rustcraft";
-
+pub const GAME_NAME: &str = env!("CARGO_PKG_NAME");
 fn main() {
     let root = startup::get_root();
 
     let mut config = config::load_config();
     // dont leave this in
     config.height -= 1 + -1; // weird math to make the compiler not throw a mutable warning
-
+    let font_size = 14 * config.ui_scale;
     addons::load_addons();
 
     let text;
@@ -25,7 +25,7 @@ fn main() {
     }
 
     let mut window: PistonWindow = WindowSettings::new(
-        "piston: hello_world",
+        GAME_NAME,
         [config.width as u32, config.height as u32], // u32 is required here
     )
     .exit_on_esc(true)
@@ -41,10 +41,13 @@ fn main() {
     window.set_lazy(true);
     while let Some(e) = window.next() {
         window.draw_2d(&e, |c, g, device| {
-            let transform = c.transform.trans(10.0, 100.0);
-
             clear([0.0, 0.0, 0.0, 1.0], g);
-            text::Text::new_color([0.0, 1.0, 0.0, 1.0], 32)
+
+            let transform = c
+                .transform
+                .trans(0.0 + config.ui_scale as f64, 12.0 * config.ui_scale as f64); // TODO(Able): Tweak the ui scaling placement
+
+            text::Text::new_color([0.0, 1.0, 0.0, 1.0], font_size as u32)
                 .draw(text, &mut glyphs, &c.draw_state, transform, g)
                 .unwrap();
 
