@@ -7,11 +7,10 @@ mod config;
 mod startup;
 
 pub const ROOT_PATH: &str = ".rustcraft";
-pub const GAME_NAME: &str = env!("CARGO_PKG_NAME");
 pub const GAME_VERSION: &str = env!("CARGO_PKG_VERSION");
 fn main() {
     let root = startup::get_root();
-    let game_meta_bar = format!("{} ver{}", GAME_NAME, GAME_VERSION);
+    let game_meta_bar = format!("Rustcraft ver{}", GAME_VERSION);
     let mut config = config::load_config();
     // dont leave this in
     config.height -= 1 + -1; // weird math to make the compiler not throw a mutable warning
@@ -48,7 +47,7 @@ fn main() {
 
             let transform = c
                 .transform
-                .trans(0.0 + config.ui_scale as f64, 12.0 * config.ui_scale as f64); // TODO(Able): Tweak the ui scaling
+                .trans(1.0 * config.ui_scale as f64, 12.0 * config.ui_scale as f64); // TODO(Able): Tweak the ui scaling
 
             text::Text::new_color(ui_color, font_size as u32)
                 .draw(text, &mut glyphs, &c.draw_state, transform, g)
@@ -56,7 +55,7 @@ fn main() {
 
             let transform2 = c
                 .transform
-                .trans(0.0 + config.ui_scale as f64, 24.0 * config.ui_scale as f64); // TODO(Able): Tweak the ui scaling
+                .trans(1.0 * config.ui_scale as f64, 24.0 * config.ui_scale as f64); // TODO(Able): Tweak the ui scaling
             let version_string = format!("Game version: {}", GAME_VERSION);
             text::Text::new_color(ui_color, font_size as u32)
                 .draw(&version_string, &mut glyphs, &c.draw_state, transform2, g)
