@@ -42,23 +42,35 @@ fn main() {
     // IDEA(Able): Provide this as an option > More testing needed
     window.set_lazy(true); // NOTE(Able): Only updates when it needs too
     while let Some(e) = window.next() {
-        window.draw_2d(&e, |c, g, device| {
-            clear([0.0, 0.0, 0.0, 1.0], g); // NOTE(Able): Clears to black with 100%
+        window.draw_3d(&e, |window| {
+            let args = e.render_args().unwrap(); // NOTE(Able):  arguments such as window size
 
-            let transform = c
+            // TODO(Able): sort out how to do this
+            // println!("{:?}", window);
+        });
+        window.draw_2d(&e, |c, g, device| {
+            clear([0.0, 0.0, 0.0, 0.0], g); // NOTE(Able): Clears to black with 100%
+
+            let startup_transform = c
                 .transform
                 .trans(1.0 * config.ui_scale as f64, 12.0 * config.ui_scale as f64); // TODO(Able): Tweak the ui scaling
 
             text::Text::new_color(ui_color, font_size as u32)
-                .draw(text, &mut glyphs, &c.draw_state, transform, g)
+                .draw(text, &mut glyphs, &c.draw_state, startup_transform, g)
                 .unwrap();
 
-            let transform2 = c
+            let version_transform = c
                 .transform
                 .trans(1.0 * config.ui_scale as f64, 24.0 * config.ui_scale as f64); // TODO(Able): Tweak the ui scaling
             let version_string = format!("Game version: {}", GAME_VERSION);
             text::Text::new_color(ui_color, font_size as u32)
-                .draw(&version_string, &mut glyphs, &c.draw_state, transform2, g)
+                .draw(
+                    &version_string,
+                    &mut glyphs,
+                    &c.draw_state,
+                    version_transform,
+                    g,
+                )
                 .unwrap();
 
             // Update glyphs before rendering.
