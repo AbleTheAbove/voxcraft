@@ -9,5 +9,5 @@ edition = "2018"
 [dependencies]
 rhai="*"
 toml = "*"
-piston_window="*"
+bevy="*"
 find_folder="*"

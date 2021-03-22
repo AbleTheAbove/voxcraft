@@ -8,6 +8,7 @@ pub struct Config {
     pub height: i64,
     pub width: i64,
     pub ui_scale: i64,
+    pub vsync: bool,
 }
 // This will return the config
 // On the mean time just fake it
@@ -20,6 +21,7 @@ pub fn load_config() -> Config {
         height: 0,
         width: 0,
         ui_scale: 1,
+        vsync: false,
     };
     /* //This insures the values exist
     match value["height"].as_integer() {
@@ -31,5 +33,6 @@ pub fn load_config() -> Config {
     config.width = value["width"].as_integer().unwrap();
     config.height = value["height"].as_integer().unwrap();
     config.ui_scale = value["ui_scale"].as_integer().unwrap();
+    config.vsync = value["vsync"].as_bool().unwrap();
     config
 }

@@ -11,6 +11,6 @@ pub struct Chunk {
 
 impl Chunk {
     pub fn fetch(self, x: usize, y: usize, z: usize) {
-        println!("{}", self.data[x][y][z]);
+        self.data[x][y][z];
     }
 }
