@@ -1,4 +1,3 @@
-use crate::startup::addon_folder_exists;
 use rhai::{Engine, ImmutableString, RegisterFn};
 use std::fmt::{Debug, Display};
 #[derive(Debug)]
@@ -11,7 +10,6 @@ struct Addon {
 pub fn load_addons() {
     // get the addon path
     // validate it then continue
-    if addon_folder_exists() {}
     let mut engine = Engine::new();
 
     engine.register_fn("log", addon_log::<ImmutableString>);

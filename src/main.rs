@@ -6,7 +6,6 @@ use bevy::{
 
 mod addons;
 mod config;
-mod startup;
 mod world;
 use world::chunk::Chunk;
 mod input;
@@ -14,20 +13,12 @@ mod input;
 pub const ROOT_PATH: &str = "assets";
 pub const GAME_VERSION: &str = env!("CARGO_PKG_VERSION");
 fn main() {
-    let root = startup::get_root();
     let game_meta_bar = format!("Rustcraft ver{}", GAME_VERSION);
     let mut config = config::load_config();
     // dont leave this in
     config.height -= 1 + -1; // weird math to make the compiler not throw a mutable warning
     let font_size = 14 * config.ui_scale;
     addons::load_addons();
-
-    let text;
-    if startup::addon_folder_exists() {
-        text = "Addon folder found!"; // TODO(*): Sensible names for these variables
-    } else {
-        text = "Rustcraft folder can't be found.";
-    } //println!("{}",
 
     {
         // NOTE(Able): Prerendering work on chunks
@@ -62,7 +53,7 @@ fn text_update_system(diagnostics: Res<Diagnostics>, mut query: Query<&mut Text,
     for mut text in query.iter_mut() {
         if let Some(fps) = diagnostics.get(FrameTimeDiagnosticsPlugin::FPS) {
             if let Some(average) = fps.average() {
-                text.value = format!("FPS: {:.2}", average);
+                text.value = format!("FPS: {:.2}\n", average);
             }
         }
     }

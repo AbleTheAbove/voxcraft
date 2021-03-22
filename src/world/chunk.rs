@@ -2,9 +2,7 @@
 these should be at the top of the save file so that the game won't mix up newly added/changed string ids
  EXAMPLE(Able): 0 <-> Air, 1 <-> Stone
 */
-struct Block {
-    id: String,
-}
+
 pub struct Chunk {
     pub data: [[[i32; 32]; 32]; 32],
 }
