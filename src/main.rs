@@ -5,6 +5,8 @@ use piston_window::*;
 mod addons;
 mod config;
 mod startup;
+mod world;
+use world::chunk::Chunk;
 
 pub const ROOT_PATH: &str = ".rustcraft";
 pub const GAME_VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -39,6 +41,7 @@ fn main() {
         .unwrap(); // TODO(Able): Handle errors here and remove the unwrap
     let ui_color = [1.0, 1.0, 1.0, 1.0];
     // IDEA(Able): Provide this as an option > More testing needed
+
     window.set_lazy(true); // NOTE(Able): Only updates when it needs too
     while let Some(e) = window.next() {
         window.draw_3d(&e, |_window| {
