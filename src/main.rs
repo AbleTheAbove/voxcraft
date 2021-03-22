@@ -40,8 +40,14 @@ fn main() {
         .load_font(assets.join("FiraSans-Regular.ttf"))
         .unwrap(); // TODO(Able): Handle errors here and remove the unwrap
     let ui_color = [1.0, 1.0, 1.0, 1.0];
-    // IDEA(Able): Provide this as an option > More testing needed
+    {
+        // NOTE(Able): Prerendering work on chunks
 
+        let chunk_data = [[[0; 32]; 32]; 32];
+        let chunk = Chunk { data: chunk_data };
+        chunk.fetch(0, 1, 2);
+    }
+    // IDEA(Able): Provide this as an option > More testing needed
     window.set_lazy(true); // NOTE(Able): Only updates when it needs too
     while let Some(e) = window.next() {
         window.draw_3d(&e, |_window| {

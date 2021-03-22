@@ -1,5 +1,12 @@
+/* NOTE(Able): Each string id will be converted into a lisr of values and matched to that string id
+these should be at the top of the save file so that the game won't mix up newly added/changed string ids
+ EXAMPLE(Able): 0 <-> Air, 1 <-> Stone
+*/
+struct Block {
+    id: String,
+}
 pub struct Chunk {
-    data: [[[String; 32]; 32]; 32],
+    pub data: [[[i32; 32]; 32]; 32],
 }
 
 impl Chunk {
