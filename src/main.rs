@@ -64,7 +64,11 @@ fn setup(
     asset_server: Res<AssetServer>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    audio: Res<Audio>,
 ) {
+    let music = asset_server.load("steps.mp3"); // TODO(Able): Replace with a good foot step sound/s
+    audio.play(music);
+
     commands
         // 2d camera
         .spawn(CameraUiBundle::default())
