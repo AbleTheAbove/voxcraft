@@ -28,7 +28,7 @@ fn main() {
     }
     //https://github.com/bevyengine/bevy/blob/latest/examples/window/window_settings.rs
     App::build()
-        .add_resource(ClearColor(Color::rgb(0.5, 0.5, 0.9)))
+        .add_resource(ClearColor(Color::rgb(0.5, 0.5, 0.9))) // NOTE(Able): Clears the window to
         .add_resource(WindowDescriptor {
             title: game_meta_bar,
             width: config.width as f32,
@@ -59,7 +59,12 @@ fn text_update_system(diagnostics: Res<Diagnostics>, mut query: Query<&mut Text,
     }
 }
 
-fn setup(commands: &mut Commands, asset_server: Res<AssetServer>) {
+fn setup(
+    commands: &mut Commands,
+    asset_server: Res<AssetServer>,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+) {
     commands
         // 2d camera
         .spawn(CameraUiBundle::default())
@@ -80,5 +85,28 @@ fn setup(commands: &mut Commands, asset_server: Res<AssetServer>) {
             },
             ..Default::default()
         })
-        .with(FpsText);
+        .with(FpsText)
+        .spawn(PbrBundle {
+            mesh: meshes.add(Mesh::from(shape::Plane { size: 5.0 })),
+            material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
+            ..Default::default()
+        })
+        // cube
+        .spawn(PbrBundle {
+            mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
+            material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+            transform: Transform::from_translation(Vec3::new(0.0, 0.5, 0.0)),
+            ..Default::default()
+        })
+        // light
+        .spawn(LightBundle {
+            transform: Transform::from_translation(Vec3::new(4.0, 8.0, 4.0)),
+            ..Default::default()
+        })
+        // camera
+        .spawn(Camera3dBundle {
+            transform: Transform::from_translation(Vec3::new(-2.0, 2.5, 5.0))
+                .looking_at(Vec3::default(), Vec3::unit_y()),
+            ..Default::default()
+        });
 }
