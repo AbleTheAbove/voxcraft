@@ -66,7 +66,7 @@ fn setup(
     mut materials: ResMut<Assets<StandardMaterial>>,
     audio: Res<Audio>,
 ) {
-    let music = asset_server.load("steps.mp3"); // TODO(Able): Replace with a good foot step sound/s
+    let music = asset_server.load("asset_pack/steps.mp3"); // TODO(Able): Replace with a good foot step sound/s
     audio.play(music);
 
     commands
@@ -80,7 +80,7 @@ fn setup(
             },
             text: Text {
                 value: "FPS:".to_string(),
-                font: asset_server.load("FiraSans-Regular.ttf"),
+                font: asset_server.load("asset_pack/FiraSans-Regular.ttf"),
                 style: TextStyle {
                     font_size: 60.0,
                     color: Color::WHITE,
