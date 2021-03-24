@@ -1,4 +1,3 @@
-# rustcraft
 <p align="center">
   <img src="branding/JokeLogo.png" alt="A Joke logo for rustcraft"/>
 </p>
