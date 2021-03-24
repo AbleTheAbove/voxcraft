@@ -1,7 +1,9 @@
 # rustcraft
-![Joke Logo]("branding/JokeLogo.png")
+![Joke Logo]("/branding/JokeLogo.png")
 
-[![Discord](https://img.shields.io/discord/819644003766894606.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/kJR97sc6AT) ![Lines of code](https://img.shields.io/tokei/lines/github/abletheabove/rustcraft) ![GitHub](https://img.shields.io/github/license/abletheabove/rustcraft)
+[![Discord](https://img.shields.io/discord/819644003766894606.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/kJR97sc6AT)
+![Lines of code](https://img.shields.io/tokei/lines/github/abletheabove/rustcraft)
+![GitHub](https://img.shields.io/github/license/abletheabove/rustcraft)
 ---
 
 ## About
