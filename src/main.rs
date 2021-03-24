@@ -1,14 +1,11 @@
-use bevy::{
-    diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
-    prelude::*,
-    render::pass::ClearColor,
-};
+use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*, render::pass::ClearColor};
 
 mod addons;
 mod config;
 mod world;
 use world::chunk::Chunk;
 mod input;
+mod ui;
 
 pub const ROOT_PATH: &str = "assets";
 pub const GAME_VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -26,8 +23,7 @@ fn main() {
         let chunk = Chunk { data: chunk_data };
         chunk.fetch(0, 1, 2);
     }
-    //https://github.com/bevyengine/bevy/blob/latest/examples/window/window_settings.rs
-    App::build()
+    App::build() // TODO(Able):
         .add_resource(ClearColor(Color::rgb(0.5, 0.5, 0.9))) // NOTE(Able): Clears the window to
         .add_resource(WindowDescriptor {
             title: game_meta_bar,
@@ -42,21 +38,8 @@ fn main() {
         .add_system(input::keyboard_input_system.system())
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .add_startup_system(setup.system())
-        .add_system(text_update_system.system())
+        .add_system(ui::text_update_system.system())
         .run();
-}
-
-// A unit struct to help identify the FPS UI component, since there may be many Text components
-struct FpsText;
-
-fn text_update_system(diagnostics: Res<Diagnostics>, mut query: Query<&mut Text, With<FpsText>>) {
-    for mut text in query.iter_mut() {
-        if let Some(fps) = diagnostics.get(FrameTimeDiagnosticsPlugin::FPS) {
-            if let Some(average) = fps.average() {
-                text.value = format!("FPS: {:.2}\n", average);
-            }
-        }
-    }
 }
 
 fn setup(
@@ -89,19 +72,9 @@ fn setup(
             },
             ..Default::default()
         })
-        .with(FpsText)
-        .spawn(PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Plane { size: 5.0 })),
-            material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
-            ..Default::default()
-        })
-        // cube
-        .spawn(PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-            material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-            transform: Transform::from_translation(Vec3::new(0.0, 0.5, 0.0)),
-            ..Default::default()
-        })
+        .with(ui::FpsText)
+        /*
+         */
         // light
         .spawn(LightBundle {
             transform: Transform::from_translation(Vec3::new(4.0, 8.0, 4.0)),
@@ -109,8 +82,23 @@ fn setup(
         })
         // camera
         .spawn(Camera3dBundle {
-            transform: Transform::from_translation(Vec3::new(-2.0, 2.5, 5.0))
+            transform: Transform::from_translation(Vec3::new(-10.0, 9.5, 5.0))
                 .looking_at(Vec3::default(), Vec3::unit_y()),
             ..Default::default()
         });
+
+    let mut iter = 0.0;
+    let mut d = 0.0;
+    for _x in 0..10 {
+        commands
+            // cube
+            .spawn(PbrBundle {
+                mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
+                material: materials.add(Color::rgb(d, 0.0, 0.0).into()),
+                transform: Transform::from_translation(Vec3::new(iter, 0.5, 0.0)),
+                ..Default::default()
+            });
+        d += 0.1;
+        iter += 1.0;
+    }
 }
