@@ -60,16 +60,14 @@ fn setup(
 ) {
     let music = asset_server.load("asset_pack/steps.mp3"); // TODO(Able): Replace with a good foot step sound/s
     audio.play(music);
-
+    // UI Rendering
     commands
-        // 2d camera
         .spawn(CameraUiBundle::default())
         // texture
         .spawn(ButtonBundle {
             style: Style {
                 align_self: AlignSelf::FlexEnd,
-
-                size: Size::new(Px(150.0), Px(65.0)),
+                size: Size::new(Px(40.0), Px(20.0)),
                 // horizontally center child text
                 justify_content: JustifyContent::Center,
                 // vertically center child text
@@ -85,7 +83,7 @@ fn setup(
                     value: "Button".to_string(),
                     font: asset_server.load("asset_pack/FiraSans-Regular.ttf"),
                     style: TextStyle {
-                        font_size: 40.0,
+                        font_size: 16.0,
                         color: Color::rgb(0.9, 0.9, 0.9),
                         ..Default::default()
                     },
@@ -96,20 +94,24 @@ fn setup(
         .spawn(TextBundle {
             style: Style {
                 align_self: AlignSelf::FlexEnd,
+                justify_content: JustifyContent::Center,
                 ..Default::default()
             },
             text: Text {
                 value: "FPS:".to_string(),
                 font: asset_server.load("asset_pack/FiraSans-Regular.ttf"),
                 style: TextStyle {
-                    font_size: 60.0,
+                    font_size: 16.0,
+
                     color: Color::WHITE,
                     ..Default::default()
                 },
             },
             ..Default::default()
         })
-        .with(ui::FpsText)
+        .with(ui::FpsText);
+    // 3d Rendering
+    commands
         .with(Player { x_rot: 0.0 })
         // light
         .spawn(LightBundle {
