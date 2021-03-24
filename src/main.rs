@@ -1,4 +1,11 @@
-use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*, render::pass::ClearColor};
+use bevy::{
+    diagnostic::FrameTimeDiagnosticsPlugin,
+    input::mouse::{MouseButtonInput, MouseMotion, MouseWheel},
+    prelude::*,
+    prelude::*,
+    render::pass::ClearColor,
+    window::CursorMoved,
+};
 
 mod addons;
 mod config;
@@ -39,9 +46,13 @@ fn main() {
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .add_startup_system(setup.system())
         .add_system(ui::text_update_system.system())
+        .add_system(print_mouse_events_system.system())
         .run();
 }
-
+#[derive(Debug)]
+struct Player {
+    x_rot: f32,
+}
 fn setup(
     commands: &mut Commands,
     asset_server: Res<AssetServer>,
@@ -73,8 +84,7 @@ fn setup(
             ..Default::default()
         })
         .with(ui::FpsText)
-        /*
-         */
+        .with(Player { x_rot: 0.0 })
         // light
         .spawn(LightBundle {
             transform: Transform::from_translation(Vec3::new(4.0, 8.0, 4.0)),
@@ -84,6 +94,7 @@ fn setup(
         .spawn(Camera3dBundle {
             transform: Transform::from_translation(Vec3::new(-10.0, 9.5, 5.0))
                 .looking_at(Vec3::default(), Vec3::unit_y()),
+            //rotation: Vec3::new(0.0, 0.0, 0.0),
             ..Default::default()
         });
 
@@ -100,5 +111,45 @@ fn setup(
             });
         d += 0.1;
         iter += 1.0;
+    }
+}
+
+#[derive(Default)]
+struct State {
+    mouse_button_event_reader: EventReader<MouseButtonInput>,
+    mouse_motion_event_reader: EventReader<MouseMotion>,
+    cursor_moved_event_reader: EventReader<CursorMoved>,
+    mouse_wheel_event_reader: EventReader<MouseWheel>,
+}
+
+/// This system prints out all mouse events as they come in
+fn print_mouse_events_system(
+    mut state: Local<State>,
+    mut query: Query<&mut Player>,
+    mouse_button_input_events: Res<Events<MouseButtonInput>>,
+    mouse_motion_events: Res<Events<MouseMotion>>,
+    cursor_moved_events: Res<Events<CursorMoved>>,
+    mouse_wheel_events: Res<Events<MouseWheel>>,
+) {
+    for event in state
+        .mouse_button_event_reader
+        .iter(&mouse_button_input_events)
+    {
+        println!("{:?}", event);
+    }
+
+    for event in state.mouse_motion_event_reader.iter(&mouse_motion_events) {
+        for mut text in query.iter_mut() {
+            text.x_rot = text.x_rot + event.delta.x;
+            println!("{:?}", text);
+        }
+    }
+
+    for event in state.cursor_moved_event_reader.iter(&cursor_moved_events) {
+        println!("{:?}", event);
+    }
+
+    for event in state.mouse_wheel_event_reader.iter(&mouse_wheel_events) {
+        println!("{:?}", event);
     }
 }
