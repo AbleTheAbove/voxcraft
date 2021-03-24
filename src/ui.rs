@@ -1,6 +1,8 @@
-use bevy::diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin};
-use bevy::ecs::{Query, Res, With};
-use bevy::ui::widget::Text;
+use bevy::{
+    diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
+    ecs::{Query, Res, With},
+    ui::widget::Text,
+};
 
 // NOTE(Able): The FPS text struct
 pub struct FpsText;
