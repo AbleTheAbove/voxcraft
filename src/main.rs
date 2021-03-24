@@ -2,7 +2,7 @@ use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*, render::pass::Cle
 mod addons;
 mod config;
 mod world;
-use world::chunk::{Chunk, CHUNK_SIZE};
+use world::chunk::{Block, Chunk, CHUNK_SIZE};
 mod input;
 mod ui;
 
@@ -16,12 +16,12 @@ fn main() {
     let _font_size = 14 * config.ui_scale;
     addons::load_addons();
 
-    {
-        // NOTE(Able): Prerendering work on chunks
-        let chunk_data = [[[0; 32]; 32]; 32];
-        let chunk = Chunk { data: chunk_data };
-        chunk.fetch(0, 1, 2);
-    }
+    // NOTE(Able): Prerendering work on chunks
+    let block = Block { id: 0 };
+    let chunk_data = [[[block; CHUNK_SIZE as usize]; CHUNK_SIZE as usize]; CHUNK_SIZE as usize];
+    let chunk = Chunk { data: chunk_data };
+    chunk.fetch(0, 0, 0);
+
     App::build() // TODO(Able):
         .add_startup_system(setup.system())
         .add_resource(ClearColor(Color::rgb(0.5, 0.5, 0.9))) // NOTE(Able): Clears the window to
@@ -108,21 +108,33 @@ fn setup(
         .with(Player { x_rot: 0.0 })
         // light
         .spawn(LightBundle {
-            transform: Transform::from_translation(Vec3::new(4.0, 8.0, 4.0)),
+            transform: Transform::from_translation(Vec3::new(
+                0.0 + CHUNK_SIZE as f32 / 2.0,
+                2.0 + CHUNK_SIZE as f32,
+                0.0 + CHUNK_SIZE as f32 / 2.0,
+            )),
             ..Default::default()
         })
         .spawn(LightBundle {
-            transform: Transform::from_translation(Vec3::new(8.0, 9.0, 8.0)),
+            transform: Transform::from_translation(Vec3::new(
+                8.0 + CHUNK_SIZE as f32,
+                2.0 + CHUNK_SIZE as f32,
+                8.0 + CHUNK_SIZE as f32,
+            )),
             ..Default::default()
         })
         // camera
         .spawn(Camera3dBundle {
-            transform: Transform::from_translation(Vec3::new(15.0, 15.0, 15.0))
-                .looking_at(Vec3::default(), Vec3::unit_y()),
+            transform: Transform::from_translation(Vec3::new(
+                15.0 + CHUNK_SIZE as f32,
+                15.0 + CHUNK_SIZE as f32,
+                15.0 + CHUNK_SIZE as f32,
+            ))
+            .looking_at(Vec3::default(), Vec3::unit_y()),
             //rotation: Vec3::new(0.0, 0.0, 0.0),
             ..Default::default()
         });
-
+    let color_inc = 1.0 / CHUNK_SIZE as f32;
     let mut c = 0.0;
     for z in 0..CHUNK_SIZE {
         let mut b = 0.0;
@@ -133,17 +145,17 @@ fn setup(
                     // cube
                     .spawn(PbrBundle {
                         mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-                        material: materials.add(Color::rgb(c, b, a).into()),
+                        material: materials.add(Color::rgb(a, b, c).into()),
                         transform: Transform::from_translation(Vec3::new(
                             x as f32, y as f32, z as f32,
                         )),
                         ..Default::default()
                     });
 
-                a += 0.125;
+                a += color_inc;
             }
-            b += 0.125;
+            b += color_inc;
         }
-        c += 0.125;
+        c += color_inc;
     }
 }
