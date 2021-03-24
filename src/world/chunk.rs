@@ -2,7 +2,7 @@
 these should be at the top of the save file so that the game won't mix up newly added/changed string ids
  EXAMPLE(Able): 0 <-> Air, 1 <-> Stone
 */
-pub const CHUNK_SIZE: u8 = 8;
+pub const CHUNK_SIZE: u8 = 4;
 
 pub struct Chunk {
     pub data: [[[i32; 32]; 32]; 32],

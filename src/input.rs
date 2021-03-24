@@ -5,7 +5,6 @@ use bevy::{
 };
 /// hi
 pub fn keyboard_input_system(keyboard_input: Res<Input<KeyCode>>) {
-    /// This system prints 'A' key state
     {
         if keyboard_input.pressed(KeyCode::A) {
             //println!("'A' currently pressed");
