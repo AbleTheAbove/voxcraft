@@ -1,4 +1,6 @@
-use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*, render::pass::ClearColor};
+use bevy::{
+    diagnostic::FrameTimeDiagnosticsPlugin, prelude::*, render::pass::ClearColor, ui::Val::Px,
+};
 mod addons;
 mod config;
 mod world;
@@ -43,6 +45,7 @@ fn main() {
         .add_system(input::print_mouse_events_system.system())
         .run();
 }
+
 #[derive(Debug)]
 struct Player {
     x_rot: f32,
@@ -64,7 +67,9 @@ fn setup(
         // texture
         .spawn(ButtonBundle {
             style: Style {
-                size: Size::new(Val::Px(150.0), Val::Px(65.0)),
+                align_self: AlignSelf::FlexEnd,
+
+                size: Size::new(Px(150.0), Px(65.0)),
                 // horizontally center child text
                 justify_content: JustifyContent::Center,
                 // vertically center child text
