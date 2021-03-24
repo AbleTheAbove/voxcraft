@@ -1,10 +1,11 @@
 # rustcraft
-![Joke Logo]("branding/JokeLogo.png")
+<div style="text-align:center"><img src="branding/JokeLogo.png" /></div>
 
 [![Discord](https://img.shields.io/discord/819644003766894606.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/kJR97sc6AT)
 ![Lines of code](https://img.shields.io/tokei/lines/github/abletheabove/rustcraft)
 ![GitHub](https://img.shields.io/github/license/abletheabove/rustcraft)
 ---
+
 
 ## About
 rustcraft is not a minecraft clone looking for feature parity, and is instead a minecraft inspired game.
