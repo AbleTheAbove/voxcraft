@@ -83,6 +83,10 @@ fn setup(
             transform: Transform::from_translation(Vec3::new(4.0, 8.0, 4.0)),
             ..Default::default()
         })
+        .spawn(LightBundle {
+            transform: Transform::from_translation(Vec3::new(8.0, 9.0, 8.0)),
+            ..Default::default()
+        })
         // camera
         .spawn(Camera3dBundle {
             transform: Transform::from_translation(Vec3::new(15.0, 15.0, 15.0))
