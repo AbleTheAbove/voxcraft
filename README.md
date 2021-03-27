@@ -11,12 +11,12 @@
 
 
 ## About
-rustcraft is not a minecraft clone looking for feature parity, and is instead a minecraft inspired game.
+Voxcraft is not a minecraft clone looking for feature parity, and is instead a minecraft inspired game.
 
 ## Installation
 [Rust](https://rust-lang.org) must be installed
 ```bash
-git clone git@github.com:AbleTheAbove/rustcraft.git && cd rustcraft && cargo run --release
+git clone git@github.com:AbleTheAbove/voxcraft.git && cd voxcraft && cargo run --release
 ```
 
 ## Contributing
