@@ -6,6 +6,7 @@ mod config;
 mod world;
 use world::chunk::{Block, Chunk, CHUNK_SIZE};
 mod input;
+mod player;
 mod ui;
 
 pub const ROOT_PATH: &str = "assets";
@@ -24,6 +25,14 @@ fn main() {
     let chunk = Chunk { data: chunk_data };
     chunk.fetch(0, 0, 0);
 
+    let player = player::Player {
+        stats: player::Stats {
+            speed: 1,
+            strength: 1,
+        },
+        x_rot: 0.1,
+    };
+
     App::build() // TODO(Able):
         .add_startup_system(setup.system())
         .add_resource(ClearColor(Color::rgb(0.5, 0.5, 0.9))) // NOTE(Able): Clears the window to
@@ -35,6 +44,7 @@ fn main() {
             resizable: false,
             ..Default::default()
         })
+        .add_resource(player)
         .add_plugins(DefaultPlugins)
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .add_system(input::toggle_cursor.system())
@@ -46,10 +56,6 @@ fn main() {
         .run();
 }
 
-#[derive(Debug)]
-struct Player {
-    x_rot: f32,
-}
 fn setup(
     commands: &mut Commands,
     asset_server: Res<AssetServer>,
@@ -112,7 +118,6 @@ fn setup(
         .with(ui::FpsText);
     // 3d Rendering
     commands
-        .with(Player { x_rot: 0.0 })
         // light
         .spawn(LightBundle {
             transform: Transform::from_translation(Vec3::new(
