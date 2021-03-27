@@ -11,12 +11,11 @@ mod ui;
 
 pub const ROOT_PATH: &str = "assets";
 pub const GAME_VERSION: &str = env!("CARGO_PKG_VERSION");
+
 fn main() {
-    let game_meta_bar = format!("Rustcraft ver{}", GAME_VERSION);
-    let mut config = config::load_config();
-    // dont leave this in
-    config.height -= 1 + -1; // weird math to make the compiler not throw a mutable warning
-    let _font_size = 14 * config.ui_scale;
+    let game_meta_bar = format!("Voxcraft ver{}", GAME_VERSION);
+    let config = config::load_config();
+
     addons::load_addons();
 
     // NOTE(Able): Prerendering work on chunks
@@ -64,6 +63,9 @@ fn setup(
     audio: Res<Audio>,
     button_materials: Res<ui::ButtonMaterials>,
 ) {
+    let config = config::load_config();
+    let font_size = (14 * config.ui_scale) as f32; // NOTE(Able): This should be used as the font size but it is not
+
     let music = asset_server.load("asset_pack/steps.mp3"); // TODO(Able): Replace with a good foot step sound/s
     audio.play(music);
     // UI Rendering
@@ -89,7 +91,7 @@ fn setup(
                     value: "Button".to_string(),
                     font: asset_server.load("asset_pack/FiraSans-Regular.ttf"),
                     style: TextStyle {
-                        font_size: 16.0,
+                        font_size: font_size,
                         color: Color::rgb(0.9, 0.9, 0.9),
                         ..Default::default()
                     },
@@ -107,7 +109,7 @@ fn setup(
                 value: "FPS:".to_string(),
                 font: asset_server.load("asset_pack/FiraSans-Regular.ttf"),
                 style: TextStyle {
-                    font_size: 16.0,
+                    font_size: font_size,
 
                     color: Color::WHITE,
                     ..Default::default()
