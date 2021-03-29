@@ -3,11 +3,15 @@ use bevy::{
 };
 mod addons;
 mod config;
-mod world;
-use world::chunk::{Block, Chunk, ChunkOffset, Direction, CHUNKSIZE};
 mod input;
 mod player;
 mod ui;
+mod world;
+use world::{
+    block::Block,
+    chunk::{Chunk, ChunkOffset, CHUNKSIZE},
+    directions::Direction,
+};
 
 pub const ROOT_PATH: &str = "assets";
 pub const GAME_VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -24,6 +28,12 @@ fn main() {
         y: 1.0,
         z: 1.0,
     };
+    let _d = Direction::Down;
+    let _e = Direction::East;
+    let _w = Direction::West;
+    let _s = Direction::South;
+    let _n = Direction::North;
+
     let block = Block {
         id: 1,
         facing: Direction::Up,
@@ -35,8 +45,14 @@ fn main() {
     };
     let world: Vec<Chunk> = vec![chunk];
 
-    world[0];
+    let mut block1 = world[0].data[0][0][0];
+    block1.rotate_facing();
 
+    let mut block2 = world[0].data[0][0][1];
+    block2.counter_rotate_facing();
+
+    println!("{:?}", block1);
+    println!("{:?}", block2);
     let player = player::Player {
         stats: player::Stats {
             speed: 1,
