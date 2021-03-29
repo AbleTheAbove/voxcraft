@@ -2,19 +2,34 @@
 these should be at the top of the save file so that the game won't mix up newly added/changed string ids
  EXAMPLE(Able): 0 <-> Air, 1 <-> Stone
 */
-#[derive(Copy, Clone)]
+pub const CHUNKSIZE: usize = 16;
+
+#[derive(Debug, Clone, Copy)]
+pub enum Direction {
+    North,
+    East,
+    South,
+    West,
+    Up, // NOTE(Able): +Y The default direction ^-^
+    Down,
+}
+
+#[derive(Debug, Clone, Copy)]
 pub struct Block {
     pub id: u32,
+    pub facing: Direction,
+}
+pub type ChunkData = [[[Block; CHUNKSIZE]; CHUNKSIZE]; CHUNKSIZE];
+
+#[derive(Debug, Clone, Copy)]
+pub struct ChunkOffset {
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
 }
 
-pub const CHUNK_SIZE: u8 = 8;
-
+#[derive(Debug, Clone, Copy)]
 pub struct Chunk {
-    pub data: [[[Block; CHUNK_SIZE as usize]; CHUNK_SIZE as usize]; CHUNK_SIZE as usize],
-}
-
-impl Chunk {
-    pub fn fetch(self, x: usize, y: usize, z: usize) {
-        self.data[x][y][z];
-    }
+    pub location: ChunkOffset,
+    pub data: ChunkData,
 }

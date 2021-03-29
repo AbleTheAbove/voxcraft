@@ -4,7 +4,7 @@ use bevy::{
 mod addons;
 mod config;
 mod world;
-use world::chunk::{Block, Chunk, CHUNK_SIZE};
+use world::chunk::{Block, Chunk, ChunkOffset, Direction, CHUNKSIZE};
 mod input;
 mod player;
 mod ui;
@@ -19,10 +19,19 @@ fn main() {
     addons::load_addons();
 
     // NOTE(Able): Prerendering work on chunks
-    let block = Block { id: 0 };
-    let chunk_data = [[[block; CHUNK_SIZE as usize]; CHUNK_SIZE as usize]; CHUNK_SIZE as usize];
-    let chunk = Chunk { data: chunk_data };
-    chunk.fetch(0, 0, 0);
+    let location = ChunkOffset { x: 1, y: 1, z: 1 };
+    let block = Block {
+        id: 1,
+        facing: Direction::Up,
+    };
+    let data = [[[block; CHUNKSIZE]; CHUNKSIZE]; CHUNKSIZE];
+    let chunk = Chunk {
+        location: location,
+        data: data,
+    };
+    let world: Vec<Chunk> = vec![chunk];
+
+    world[0];
 
     let player = player::Player {
         stats: player::Stats {
@@ -32,7 +41,7 @@ fn main() {
         x_rot: 0.1,
     };
 
-    App::build() // TODO(Able):
+    App::build()
         .add_startup_system(setup.system())
         .add_resource(ClearColor(Color::rgb(0.5, 0.5, 0.9))) // NOTE(Able): Clears the window to
         .add_resource(WindowDescriptor {
@@ -48,7 +57,7 @@ fn main() {
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .add_system(input::toggle_cursor.system())
         .add_system(input::keyboard_input_system.system())
-        .init_resource::<ui::ButtonMaterials>()
+        .init_resource::<ui::ButtonMaterials>() // NOTE(Able): Here because game panics else
         .add_system(ui::text_update_system.system())
         .add_system(ui::button_system.system())
         .add_system(input::print_mouse_events_system.system())
@@ -123,38 +132,40 @@ fn setup(
         // light
         .spawn(LightBundle {
             transform: Transform::from_translation(Vec3::new(
-                0.0 + CHUNK_SIZE as f32 / 2.0,
-                2.0 + CHUNK_SIZE as f32,
-                0.0 + CHUNK_SIZE as f32 / 2.0,
+                0.0 + CHUNKSIZE as f32 / 2.0,
+                2.0 + CHUNKSIZE as f32,
+                0.0 + CHUNKSIZE as f32 / 2.0,
             )),
             ..Default::default()
         })
         .spawn(LightBundle {
             transform: Transform::from_translation(Vec3::new(
-                8.0 + CHUNK_SIZE as f32,
-                2.0 + CHUNK_SIZE as f32,
-                8.0 + CHUNK_SIZE as f32,
+                8.0 + CHUNKSIZE as f32,
+                2.0 + CHUNKSIZE as f32,
+                8.0 + CHUNKSIZE as f32,
             )),
             ..Default::default()
         })
         // camera
         .spawn(Camera3dBundle {
             transform: Transform::from_translation(Vec3::new(
-                15.0 + CHUNK_SIZE as f32,
-                15.0 + CHUNK_SIZE as f32,
-                15.0 + CHUNK_SIZE as f32,
+                15.0 + CHUNKSIZE as f32,
+                15.0 + CHUNKSIZE as f32,
+                15.0 + CHUNKSIZE as f32,
             ))
             .looking_at(Vec3::default(), Vec3::unit_y()),
             //rotation: Vec3::new(0.0, 0.0, 0.0),
             ..Default::default()
         });
-    let color_inc = 1.0 / CHUNK_SIZE as f32;
+    let color_inc = 1.0 / CHUNKSIZE as f32;
     let mut c = 0.0;
-    for z in 0..CHUNK_SIZE {
+
+    for z in 0..CHUNKSIZE {
+        // Z
         let mut b = 0.0;
-        for y in 0..CHUNK_SIZE {
+        for y in 0..CHUNKSIZE {
             let mut a = 0.0;
-            for x in 0..CHUNK_SIZE {
+            for x in 0..CHUNKSIZE {
                 commands
                     // cube
                     .spawn(PbrBundle {
@@ -171,5 +182,5 @@ fn setup(
             b += color_inc;
         }
         c += color_inc;
-    }
+    } // Z end
 }
