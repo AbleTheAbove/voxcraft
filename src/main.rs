@@ -19,7 +19,11 @@ fn main() {
     addons::load_addons();
 
     // NOTE(Able): Prerendering work on chunks
-    let location = ChunkOffset { x: 1, y: 1, z: 1 };
+    let location = ChunkOffset {
+        x: 1.0,
+        y: 1.0,
+        z: 1.0,
+    };
     let block = Block {
         id: 1,
         facing: Direction::Up,

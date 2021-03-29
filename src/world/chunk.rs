@@ -23,9 +23,9 @@ pub type ChunkData = [[[Block; CHUNKSIZE]; CHUNKSIZE]; CHUNKSIZE];
 
 #[derive(Debug, Clone, Copy)]
 pub struct ChunkOffset {
-    pub x: i32,
-    pub y: i32,
-    pub z: i32,
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
 }
 
 #[derive(Debug, Clone, Copy)]
